@@ -1,0 +1,105 @@
+.left-panel {
+    width: var(--left-panel-width);
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-glass);
+}
+
+.left-panel-header {
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.left-panel-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.left-panel-header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    margin: 0.75rem auto 0;
+    border-radius: 2px;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.nav-item {
+    padding: 0;
+    margin: 0;
+}
+
+.nav-link {
+    display: block;
+    padding: 0.875rem 1.5rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    transition:
+        color var(--transition-fast),
+        background var(--transition-fast),
+        transform var(--transition-fast),
+        padding-left var(--transition-fast);
+    border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
+    background: var(--bg-glass-hover);
+    padding-left: 2rem;
+    border-left-color: var(--accent-glow);
+}
+
+.nav-link:hover::before {
+    content: '▸';
+    position: absolute;
+    left: 1rem;
+    color: var(--accent-primary);
+    animation: fadeIn var(--transition-fast);
+}
+
+.nav-link.active {
+    color: var(--accent-primary);
+    background: rgba(245, 158, 11, 0.1);
+    border-left-color: var(--accent-primary);
+    padding-left: 2rem;
+}
+
+.nav-link.active::before {
+    content: '▸';
+    position: absolute;
+    left: 1rem;
+    color: var(--accent-primary);
+}
+
+/* Decorative footer */
+.left-panel-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-glass);
+    text-align: center;
+}
+
+.left-panel-footer span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
