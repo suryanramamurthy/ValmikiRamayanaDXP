@@ -103,3 +103,39 @@
     color: var(--text-muted);
     letter-spacing: 1px;
 }
+
+/* Loading/Error/Empty states */
+.loading-state,
+.error-state,
+.empty-state {
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.loading-state p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    animation: pulse 2s infinite;
+}
+
+.error-state p {
+    color: var(--error, #dc2626);
+    font-size: 0.9rem;
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}

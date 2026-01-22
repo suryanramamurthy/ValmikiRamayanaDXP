@@ -1,17 +1,62 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Header from './components/Header/Header'
 import LeftPanel from './components/LeftPanel/LeftPanel'
 import RightPanel from './components/RightPanel/RightPanel'
+import { getAllSargams, getSargamByUid } from './services/sargamService'
 
 function App() {
+    const [sargams, setSargams] = useState([])
     const [selectedSargam, setSelectedSargam] = useState(null)
+    const [selectedSargamContent, setSelectedSargamContent] = useState(null)
+    const [sargamCache, setSargamCache] = useState({}) // Session cache for sargam content
     const [messages, setMessages] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [isPanelOpen, setIsPanelOpen] = useState(true)
+    const [isPanelOpen, setIsPanelOpen] = useState(false) // Right panel closed by default
+    const [sargamsLoading, setSargamsLoading] = useState(true)
+    const [sargamsError, setSargamsError] = useState(null)
 
-    const handleSargamSelect = (sargamNumber) => {
-        setSelectedSargam(sargamNumber)
+    // Fetch all sargams on component mount
+    useEffect(() => {
+        const fetchSargams = async () => {
+            try {
+                setSargamsLoading(true)
+                const entries = await getAllSargams()
+                setSargams(entries)
+                setSargamsError(null)
+            } catch (error) {
+                console.error('Failed to fetch sargams:', error)
+                setSargamsError('Failed to load sargams. Please try again later.')
+            } finally {
+                setSargamsLoading(false)
+            }
+        }
+
+        fetchSargams()
+    }, [])
+
+    const handleSargamSelect = async (sargamUid) => {
+        try {
+            setSelectedSargam(sargamUid)
+
+            // Check cache first
+            if (sargamCache[sargamUid]) {
+                console.log('[CACHE] Using cached content for:', sargamUid)
+                setSelectedSargamContent(sargamCache[sargamUid])
+                return
+            }
+
+            // Fetch if not in cache
+            setSelectedSargamContent(null)
+            const sargamEntry = await getSargamByUid(sargamUid)
+
+            // Store in cache
+            setSargamCache(prev => ({ ...prev, [sargamUid]: sargamEntry }))
+            setSelectedSargamContent(sargamEntry)
+        } catch (error) {
+            console.error('Failed to fetch sargam content:', error)
+            setSelectedSargamContent({ error: true })
+        }
     }
 
     const handleSendMessage = async (query) => {
@@ -82,13 +127,41 @@ function App() {
                 <LeftPanel
                     selectedSargam={selectedSargam}
                     onSargamSelect={handleSargamSelect}
+                    sargams={sargams}
+                    isLoading={sargamsLoading}
+                    error={sargamsError}
                 />
 
                 <main className={`main-content ${isPanelOpen ? 'panel-open' : 'panel-collapsed'}`}>
                     {selectedSargam ? (
                         <div className="sargam-content">
-                            <h2>Sargam {selectedSargam}</h2>
-                            <p>Content for Sargam {selectedSargam} will be displayed here.</p>
+                            {selectedSargamContent ? (
+                                selectedSargamContent.error ? (
+                                    <div className="error-message">
+                                        <h2>Error</h2>
+                                        <p>Failed to load sargam content. Please try again.</p>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <h2>{selectedSargamContent.title || 'Sargam'}</h2>
+                                        {selectedSargamContent.sargam_slokas && selectedSargamContent.sargam_slokas.length > 0 ? (
+                                            <div className="slokam-list">
+                                                {selectedSargamContent.sargam_slokas.map((sloka, index) => (
+                                                    <div key={index} className="slokam-item">
+                                                        <p className="slokam-text">{sloka}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p>No slokams available for this sargam.</p>
+                                        )}
+                                    </>
+                                )
+                            ) : (
+                                <div className="loading-content">
+                                    <p>Loading sargam content...</p>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <div className="placeholder-content">
