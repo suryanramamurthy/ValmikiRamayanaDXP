@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import Header from './components/Header/Header'
 import LeftPanel from './components/LeftPanel/LeftPanel'
 import RightPanel from './components/RightPanel/RightPanel'
 
@@ -68,33 +69,37 @@ function App() {
     }
 
     return (
-        <div className="app-container">
-            <LeftPanel
-                selectedSargam={selectedSargam}
-                onSargamSelect={handleSargamSelect}
-            />
+        <div className="app-wrapper">
+            <Header />
 
-            <main className={`main-content ${isPanelOpen ? 'panel-open' : 'panel-collapsed'}`}>
-                {selectedSargam ? (
-                    <div className="sargam-content">
-                        <h2>Sargam {selectedSargam}</h2>
-                        <p>Content for Sargam {selectedSargam} will be displayed here.</p>
-                    </div>
-                ) : (
-                    <div className="placeholder-content">
-                        <h2>Welcome to Valmiki Ramayana</h2>
-                        <p>Select a Sargam from the left panel to begin exploring</p>
-                    </div>
-                )}
-            </main>
+            <div className="app-container">
+                <LeftPanel
+                    selectedSargam={selectedSargam}
+                    onSargamSelect={handleSargamSelect}
+                />
 
-            <RightPanel
-                isOpen={isPanelOpen}
-                onToggle={togglePanel}
-                messages={messages}
-                isLoading={isLoading}
-                onSendMessage={handleSendMessage}
-            />
+                <main className={`main-content ${isPanelOpen ? 'panel-open' : 'panel-collapsed'}`}>
+                    {selectedSargam ? (
+                        <div className="sargam-content">
+                            <h2>Sargam {selectedSargam}</h2>
+                            <p>Content for Sargam {selectedSargam} will be displayed here.</p>
+                        </div>
+                    ) : (
+                        <div className="placeholder-content">
+                            <h2>Welcome to Valmiki Ramayana</h2>
+                            <p>Select a Sargam from the left panel to begin exploring</p>
+                        </div>
+                    )}
+                </main>
+
+                <RightPanel
+                    isOpen={isPanelOpen}
+                    onToggle={togglePanel}
+                    messages={messages}
+                    isLoading={isLoading}
+                    onSendMessage={handleSendMessage}
+                />
+            </div>
         </div>
     )
 }

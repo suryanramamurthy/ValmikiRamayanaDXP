@@ -1,0 +1,117 @@
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    z-index: 200;
+    border-bottom: 1px solid var(--border-glass);
+    background: linear-gradient(
+        180deg,
+        rgba(30, 30, 50, 0.95) 0%,
+        rgba(30, 30, 50, 0.85) 100%
+    );
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.sage-logo {
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.3));
+    transition: filter var(--transition-normal);
+}
+
+.sage-logo:hover {
+    filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.5));
+}
+
+.header-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.main-title {
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sanskrit-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--accent-primary), #fbbf24, var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+    font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+}
+
+.english-title {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.header-decoration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.decorative-symbol {
+    font-size: 1.5rem;
+    color: var(--accent-primary);
+    opacity: 0.6;
+    font-family: serif;
+}
+
+/* Subtle shimmer animation for the title */
+@keyframes titleShimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.sanskrit-title {
+    background-size: 200% auto;
+    animation: titleShimmer 8s linear infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .app-header {
+        height: 70px;
+        padding: 0 1rem;
+    }
+    
+    .sage-logo {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .sanskrit-title {
+        font-size: 1.2rem;
+    }
+    
+    .english-title {
+        font-size: 0.75rem;
+    }
+    
+    .header-decoration {
+        display: none;
+    }
+}
