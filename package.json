@@ -6,8 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:prod": "vite build --mode production",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "clean": "rm -rf dist node_modules",
+    "reinstall": "npm run clean && npm install",
+    "start": "npm run dev"
   },
   "dependencies": {
     "@contentstack/delivery-sdk": "^4.11.0",
