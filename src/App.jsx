@@ -39,7 +39,13 @@ function App() {
                 }
             )
 
-            const data = await response.json()
+            // Get raw text first since API returns malformed JSON (JSON followed by raw text)
+            const rawText = await response.text()
+
+            // Extract only the JSON portion (ends at first closing brace)
+            const jsonEndIndex = rawText.indexOf('}') + 1
+            const jsonPortion = rawText.substring(0, jsonEndIndex)
+            const data = JSON.parse(jsonPortion)
 
             // Add assistant response to history
             const assistantMessage = {
